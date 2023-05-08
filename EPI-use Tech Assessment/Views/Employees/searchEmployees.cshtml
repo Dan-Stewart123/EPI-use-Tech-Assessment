@@ -1,0 +1,94 @@
+﻿@model EPI_use_Tech_Assessment.Models.Employee
+@{
+    ViewBag.Title = "searchEmployees";
+    var error = ViewData["err"];
+}
+
+<h2>Search Employees</h2>
+<br />
+<label style="color:red">@error</label>
+
+@using (Html.BeginForm("searchEmployees", "Employees", FormMethod.Post))
+{
+    <div style="display:none;">
+        <input type="text" id="id" name="id" value="@Model.EmployeeID">
+    </div>
+
+    <label class="col-md-8">@Html.Label("Please choose what field you would like to search in:")</label>
+    <select name="sort" id="sort">
+        <option value="1">First Name</option>
+        <option value="2">Surname</option>
+        <option value="3">Date of Birth</option>
+        <option value="4">Employee Number</option>
+        <option value="5">Salary</option>
+        <option value="6">Email Address</option>
+        <option value="7">Position</option>
+        <option value="8">Manager (Please enter the managers surname)</option>
+    </select>
+    <br />
+    <br />
+    <label class="col-md-3">@Html.Label("Search:")</label>
+    <input class="col-md-3" type="text" id="search" name="search">
+    <br />
+    <br />
+    <input type="submit" class="btn btn-primary" , value="Confirm" id="submitButton" />
+    <br />
+    <br />
+    <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("homePage", "Employees", new { id = Model.EmployeeID})'">
+        Cancel
+    </button>
+}
+<br />
+<h3>Employees:</h3>
+<br />
+<table>
+    <tr>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Name</td>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Surname</td>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Date of Birth</td>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Email address</td>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Position</td>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 8px; "></td>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 8px; "></td>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 8px; "></td>
+    </tr>
+
+    @{
+        if (ViewData["employees"] != null)
+        {
+            if (ViewData.Values != null && ViewData.Values.Count() > 0)
+            {
+                foreach (var item in ViewData["employees"] as List<EPI_use_Tech_Assessment.Models.Employee>)
+                {
+                    <tr>
+                        <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px;">@item.FName</td>
+                        <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px; ">@item.LName</td>
+                        <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px; ">@item.DOB</td>
+                        <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px; ">@item.email</td>
+                        <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px; ">@item.Position</td>
+                        <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 8px; ">
+                            <button type="button" class="btn btn-primary" style="width:250px; align-self:end" onclick="location.href='@Url.Action("viewEmployeePage", "Employees", new { id = Model.EmployeeID, empID = item.EmployeeID })'">
+                                View Employee information
+                            </button>
+                        </td>
+                        @if (Model.EmployeeID == item.Manager || Model.EmployeeID == item.EmployeeID)
+                        {
+                            <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 8px; ">
+                                <button type="button" class="btn btn-warning" style="width:250px; align-self:end" onclick="location.href='@Url.Action("updateOtherEmployee", "Employees", new { id = Model.EmployeeID, empID = item.EmployeeID })'">
+                                    Update employee
+                                </button>
+                            </td>
+                            <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 8px; ">
+                                <button type="button" class="btn btn-danger" style="width:250px; align-self:end" onclick="location.href='@Url.Action("deleteOtherEmployee", "Employees", new { id = Model.EmployeeID, empID = item.EmployeeID })'">
+                                    Delete employee
+                                </button>
+                            </td>
+                        }
+
+                    </tr>
+
+                }
+            }
+        }
+    }
+</table>

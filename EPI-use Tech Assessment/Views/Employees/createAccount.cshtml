@@ -1,0 +1,67 @@
+﻿@model IEnumerable<EPI_use_Tech_Assessment.Models.Employee>
+@{
+    ViewBag.Title = "createAccount";
+    var error = ViewData["err"];
+}
+
+<h2>Create a new Account</h2>
+<p>Please provide all of the following information:</p>
+<br />
+<label style="color:red">@error</label>
+<br />
+<p>(All fields are required)</p>
+@using (Html.BeginForm("createAccount", "Employees", FormMethod.Post))
+{
+    <label class="col-md-3">@Html.Label("First Name:")</label>
+    <input class="col-md-3" type="text" id="firstName" name="firstName">
+
+    <label class="col-md-3">@Html.Label("Last Name:")</label>
+    <input class="col-md-3" type="text" id="lastName" name="lastName">
+    <br />
+    <br />
+
+    <label class="col-md-3">@Html.Label("Date of Birth:")</label>
+    <input class="col-md-3" type="date" id="dob" name="dob">
+
+    <label class="col-md-3">@Html.Label("Email Address:")</label>
+    <input class="col-md-3" type="text" id="email" name="email">
+    <br />
+    <br />
+    <label class="col-md-3">@Html.Label("Employee Number:")</label>
+    <input class="col-md-3" type="number" id="empNum" name="empNum">
+
+    <label class="col-md-3">@Html.Label("Salary (Monthly):")</label>
+    <input class="col-md-3" type="number" id="salary" name="salary">
+
+    <br />
+    <br />
+    <label class="col-md-3">@Html.Label("Position:")</label>
+    <input class="col-md-3" type="text" id="pos" name="pos">
+
+    <label class="col-md-3">@Html.Label("Reporting Line manager:")</label>
+    <select id="rlm" name="rlm">
+        <option value="0">No Manager</option>
+        @foreach (var item in Model)
+        {
+            <option value="@item.EmployeeID">@item.FName @item.LName</option>
+        }
+    </select>
+    <br />
+    <br />
+
+    <label class="col-md-3">@Html.Label("Password:")</label>
+    <input class="col-md-3" type="password" id="password" name="password">
+
+    <label class="col-md-3">@Html.Label("Confirm password:")</label>
+    <input class="col-md-3" type="password" id="confPass" name="confPass">
+    <br />
+    <br />
+    <span class="label label-warning" id="warningLabel" style="display:none;">Passwords do not match</span>
+    <br />
+    <br />
+    <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("loginPage", "Employees")'">
+        Cancel
+    </button>
+    <input type="submit" class="btn btn-primary" , value="Submit" id="submitButton" />
+}
+

@@ -1,0 +1,47 @@
+﻿@model EPI_use_Tech_Assessment.Models.Employee
+@{
+    ViewBag.Title = "deletePage";
+}
+
+<h2>Delete Account</h2>
+<p>Are you sure you wish to delete your account</p>
+<dl class="dl-horizontal">
+    <dt class="col-md-4">
+        @Html.Label("First Name:")
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.FName)
+    </dd>
+
+    <dt class="col-md-4">
+        @Html.Label("Surname:")
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.LName)
+    </dd>
+
+    <dt class="col-md-4">
+        @Html.Label("Email Address:")
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.email)
+    </dd>
+
+    <dt class="col-md-4">
+        @Html.Label("Position:")
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Position)
+    </dd>
+</dl>
+
+<button type="button" class="btn btn-info" onclick="location.href='@Url.Action("homePage", "Employees", new { id = Model.EmployeeID})'">
+    Cancel
+</button>
+<button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("deleteConformation", "Employees", new { id = Model.EmployeeID })'">
+    Delete
+</button>

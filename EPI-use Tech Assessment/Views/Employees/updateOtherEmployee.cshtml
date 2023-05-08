@@ -1,0 +1,60 @@
+﻿@model EPI_use_Tech_Assessment.Models.Employee
+@{
+    ViewBag.Title = "updateOtherEmployee";
+    var id = ViewData["id"];
+    var error = ViewData["err"];
+}
+
+<h2>Update Employee</h2>
+<p>Please provide all of the following information:</p>
+<br />
+<label style="color:red">@error</label>
+<br />
+<p>(All fields are required)</p>
+@using (Html.BeginForm("updateOtherEmployee", "Employees", FormMethod.Post))
+{
+    <div style="display:none;">
+        <input class="col-md-3" type="number" id="id" name="id" value="@id">
+    </div>
+
+    <div style="display:none;">
+        <input class="col-md-3" type="number" id="empID" name="empID" value="@Model.EmployeeID">
+    </div>
+
+    <label class="col-md-3">@Html.Label("First Name:")</label>
+    <input class="col-md-3" type="text" id="firstName" name="firstName" value="@Model.FName">
+
+    <label class="col-md-3">@Html.Label("Last Name:")</label>
+    <input class="col-md-3" type="text" id="lastName" name="lastName" value="@Model.LName">
+    <br />
+    <br />
+
+    <label class="col-md-3">@Html.Label("Date of Birth:")</label>
+    <input class="col-md-3" type="date" id="dob" name="dob">
+
+    <label class="col-md-3">@Html.Label("Email Address:")</label>
+    <input class="col-md-3" type="text" id="email" name="email" value="@Model.email">
+    <br />
+    <br />
+    <label class="col-md-3">@Html.Label("Employee Number:")</label>
+    <input class="col-md-3" type="number" id="empNum" name="empNum" value="@Model.EmpNumber">
+
+    <label class="col-md-3">@Html.Label("Salary (Monthly):")</label>
+    <input class="col-md-3" type="number" id="salary" name="salary" value="@Model.Salary">
+
+    <br />
+    <br />
+    <label class="col-md-3">@Html.Label("Position:")</label>
+    <input class="col-md-3" type="text" id="pos" name="pos" value="@Model.Position">
+
+    <label class="col-md-3">@Html.Label("Reporting Line manager:")</label>
+    @Html.DropDownList("rlm", (IEnumerable<SelectListItem>)ViewBag.data)
+    <br />
+    <br />
+
+    <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("searchEmployees", "Employees", new { id = id })'">
+        Cancel
+    </button>
+    <input type="submit" class="btn btn-primary" , value="Submit" id="submitButton" />
+}
+

@@ -1,0 +1,66 @@
+﻿@model EPI_use_Tech_Assessment.Models.Employee
+@{
+    ViewBag.Title = "sortEmployees";
+}
+
+<h2>Sort Employees</h2>
+
+@using (Html.BeginForm("sortEmployees", "Employees", FormMethod.Post))
+{
+    <div style="display:none;">
+        <input type="text" id="id" name="id" value="@Model.EmployeeID">
+    </div>
+
+    <label class="col-md-8">@Html.Label("Please choose how you would like the list to be sorted:")</label>
+    <select name="sort" id="sort">
+        <option value="1">First Name</option>
+        <option value="2">Surname</option>
+        <option value="3">Date of Birth</option>
+        <option value="4">Employee Number</option>
+        <option value="5">Salary ascending</option>
+        <option value="6">Salary descending</option>
+        <option value="7">Position</option>
+        <option value="8">Manager</option>
+    </select>
+    <br />
+    <br />
+    <input type="submit" class="btn btn-primary" , value="Confirm" id="submitButton" />
+    <br />
+    <br />
+    <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("homePage", "Employees", new { id = Model.EmployeeID})'">
+        Cancel
+    </button>
+}
+<br />
+<h3>Employees:</h3>
+<br />
+<table>
+    <tr>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Name</td>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Surname</td>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Date of Birth</td>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Email address</td>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Position</td>
+    </tr>
+
+    @{
+        if (ViewData["employees"] != null)
+        {
+            if (ViewData.Values != null && ViewData.Values.Count() > 0)
+            {
+                foreach (var item in ViewData["employees"] as List<EPI_use_Tech_Assessment.Models.Employee>)
+                {
+                    <tr>
+                        <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px;">@item.FName</td>
+                        <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px; ">@item.LName</td>
+                        <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px; ">@item.DOB</td>
+                        <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px; ">@item.email</td>
+                        <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px; ">@item.Position</td>
+                    </tr>
+
+                }
+            }
+        }
+    }
+</table>
+

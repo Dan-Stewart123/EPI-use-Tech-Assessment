@@ -1,0 +1,59 @@
+﻿@model EPI_use_Tech_Assessment.Models.Employee
+@{
+    ViewBag.Title = "homePage";
+}
+
+<h2>Home Page</h2>
+<br />
+<p>Welcome to the EPI-use employee manager, @Model.FName @Model.LName.</p>
+<div class="col-md-4">
+    <button type="button" class="btn btn-danger" style="width:250px; align-self:end" onclick="location.href='@Url.Action("loginPage", "Employees")'">
+        Logout
+    </button>
+    <br />
+    <br />
+    <button type="button" class="btn btn-warning" style="width:250px; align-self:end" onclick="location.href='@Url.Action("updateAccount", "Employees", new { id = Model.EmployeeID })'">
+        Edit your account details
+    </button>
+    <br />
+    <br />
+    <button type="button" class="btn btn-default" style="width:250px; align-self:end" onclick="location.href='@Url.Action("changePassword", "Employees", new { id = Model.EmployeeID })'">
+        Change your password
+    </button>
+    <br />
+    <br />
+    <button type="button" class="btn btn-danger" style="width:250px; align-self:end" onclick="location.href='@Url.Action("deletePage", "Employees", new { id = Model.EmployeeID })'">
+        Delete your account
+    </button>
+
+</div>
+<div class="col-md-8" id="jstree">
+    <ul>
+        <li>Employees:</li>
+        <li>Reporting employees:</li>
+    </ul>
+</div>
+<br />
+<br />
+<div class="col-mg-4">
+    <button type="button" class="btn btn-primary" style="width:250px; align-self:end" onclick="location.href='@Url.Action("searchEmployees", "Employees", new { id = Model.EmployeeID })'">
+        Search for an employee
+    </button>
+    <br />
+    <br />
+    <button type="button" class="btn btn-primary" style="width:250px; align-self:end" onclick="location.href='@Url.Action("sortEmployees", "Employees", new { id = Model.EmployeeID })'">
+        Sort the list of employees
+    </button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script type="text/javascript">
+    $('#jstree').jstree({
+        'core': {
+            'data': @Html.Raw(ViewBag.json),
+        }
+    });
+
+</script>

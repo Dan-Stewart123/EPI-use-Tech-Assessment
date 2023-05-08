@@ -1,0 +1,88 @@
+﻿@model EPI_use_Tech_Assessment.Models.Employee
+@{
+    ViewBag.Title = "deleteOtherEmployee";
+    var id = ViewData["id"];
+    var manager = ViewData["manager"];
+}
+
+<h2>Delete Employee</h2>
+<br />
+<br />
+<p>Are you sure you want to delete this employee.</p>
+<br />
+<dl class="dl-horizontal">
+
+    <dt class="col-md-4">
+        @Html.Label("First Name:")
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.FName)
+    </dd>
+
+    <dt class="col-md-4">
+        @Html.Label("Surname:")
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.LName)
+    </dd>
+
+    <dt class="col-md-4">
+        @Html.Label("Date of Birth:")
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.DOB)
+    </dd>
+
+    <dt class="col-md-4">
+        @Html.Label("Email Address:")
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.email)
+    </dd>
+
+    <dt class="col-md-4">
+        @Html.Label("Employee Number:")
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.EmpNumber)
+    </dd>
+
+    <dt class="col-md-4">
+        @Html.Label("Position:")
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Position)
+    </dd>
+
+    <dt class="col-md-4">
+        @Html.Label("Salary:")
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.Salary)
+    </dd>
+
+    <dt class="col-md-4">
+        @Html.Label("Manager:")
+    </dt>
+
+    <dd>
+        @manager
+    </dd>
+
+</dl>
+<br />
+<br />
+<button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("deleteOtherConformation", "Employees", new { id = id, delID = Model.EmployeeID })'">
+    Delete
+</button>
+<br />
+<button type="button" class="btn btn-default" onclick="location.href='@Url.Action("searchEmployees", "Employees", new { id = id})'">
+    Back
+</button>
