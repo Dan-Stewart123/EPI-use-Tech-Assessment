@@ -88,10 +88,9 @@
 </dl>
 <br />
 <br />
+<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("searchEmployees", "Employees", new { id = id})'">
+    Back
+</button>
 <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("deleteOtherConformation", "Employees", new { id = id, delID = Model.EmployeeID })'">
     Delete
-</button>
-<br />
-<button type="button" class="btn btn-default" onclick="location.href='@Url.Action("searchEmployees", "Employees", new { id = id})'">
-    Back
 </button>

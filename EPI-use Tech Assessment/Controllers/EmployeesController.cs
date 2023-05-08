@@ -132,22 +132,22 @@ namespace EPI_use_Tech_Assessment.Controllers
             if (firstName == "" || lastName == "" || dob == "" || email == "" || empNum == null || salary == null || pos == "" || rlm == null || password == "" || confPass == "")
             {
                 ViewData["err"] = "Please complete all the required fields";
-                return View();
+                return View(db.Employees.ToList());
             }// if all fields are empty
             if (password != confPass)
             {
                 ViewData["err"] = "Passwords do not match";
-                return View();
+                return View(db.Employees.ToList());
             }// checks that passwords match
             if (password.Length < 8 || confPass.Length < 8)
             {
                 ViewData["err"] = "Password is not long enough.";
-                return View();
+                return View(db.Employees.ToList());
             }// checks password length
             if (email.Contains("@") == false)
             {
                 ViewData["err"] = "Please enter a valid email address.";
-                return View();
+                return View(db.Employees.ToList());
             }// validated email
             else
             {
@@ -226,7 +226,7 @@ namespace EPI_use_Tech_Assessment.Controllers
 
                     var temp2 = sb.ToString().ToLower();
 
-                    ViewData["hash"] = sb.ToString().ToLower();
+                    ViewData["hash"] = sb.ToString().ToLower();// hashes employees email to create gravatar link in view
 
                     SetPageCacheNoStore();
                     return View(loggedEmployee);
@@ -351,13 +351,41 @@ namespace EPI_use_Tech_Assessment.Controllers
                 {
                     if (firstName == "" || lastName == "" || dob == "" || email == "" || empNum == null || salary == null || pos == "" || rlm == "")
                     {
+                        List<SelectListItem> selListEmployees = new List<SelectListItem>();
+                        SelectListItem noManager = new SelectListItem();
+                        noManager.Value = "0";
+                        noManager.Text = "No Manager";
+                        selListEmployees.Add(noManager);
+
+                        foreach (var emp in db.Employees.ToList())
+                        {
+                            SelectListItem temp = new SelectListItem();
+                            temp.Value = "" + emp.EmployeeID;
+                            temp.Text = emp.FName + " " + emp.LName;
+                            selListEmployees.Add(temp);
+                        }// populating select list 
+                        ViewBag.data = selListEmployees;
                         ViewData["err"] = "Please complete all the required fields";
-                        return View();
+                        return View(db.Employees.ToList().Find(e => e.EmployeeID == id));
                     }// if all fields are empty
                     if (email.Contains("@") == false)
                     {
+                        List<SelectListItem> selListEmployees = new List<SelectListItem>();
+                        SelectListItem noManager = new SelectListItem();
+                        noManager.Value = "0";
+                        noManager.Text = "No Manager";
+                        selListEmployees.Add(noManager);
+
+                        foreach (var emp in db.Employees.ToList())
+                        {
+                            SelectListItem temp = new SelectListItem();
+                            temp.Value = "" + emp.EmployeeID;
+                            temp.Text = emp.FName + " " + emp.LName;
+                            selListEmployees.Add(temp);
+                        }// populating select list 
+                        ViewBag.data = selListEmployees;
                         ViewData["err"] = "Please enter a valid email address.";
-                        return View();
+                        return View(db.Employees.ToList().Find(e => e.EmployeeID == id));
                     }// validated email
                     else
                     {
@@ -418,18 +446,18 @@ namespace EPI_use_Tech_Assessment.Controllers
                 {
                     if (oldPass == "" || newPass == "" || confPass == "")
                     {
-                        string temp = "Complete all the fields before clicking submit.";
-                        return RedirectToAction("resetPassword", new { id = id, err = temp });
+                        ViewData["err"] = "Please complete all the required fields";
+                        return View(db.Employees.ToList().Find(e => e.EmployeeID == id));
                     }// if fields are empty
                     if (newPass != confPass)
                     {
-                        string temp = "Passwords don't match.";
-                        return RedirectToAction("resetPassword", new { id = id, err = temp });
+                        ViewData["err"] = "Passwords don't match.";
+                        return View(db.Employees.ToList().Find(e => e.EmployeeID == id));
                     }// if passwords dont match
                     if (newPass.Length < 8 || confPass.Length < 8)
                     {
-                        string temp = "Password is not long enough.";
-                        return RedirectToAction("resetPassword", new { id = id, err = temp });
+                        ViewData["err"] = "Password is not long enough.";
+                        return View(db.Employees.ToList().Find(e => e.EmployeeID == id));
                     }// checks password length
                     else
                     {
@@ -610,8 +638,8 @@ namespace EPI_use_Tech_Assessment.Controllers
                     List<Employee> sortedList = new List<Employee>();
                     if (search == "")
                     {
-                        ViewData["err"] = "Please emter a search parameter.";
-                        return View();
+                        ViewData["err"] = "Please enter a search parameter.";
+                        return View(db.Employees.ToList().Find(e => e.EmployeeID == id));
                     }
                     if (sort == "1")
                     {
@@ -688,7 +716,7 @@ namespace EPI_use_Tech_Assessment.Controllers
                     var sb = new StringBuilder();
                     foreach (var t in hashBytes) sb.Append(t.ToString("X2"));
 
-                    ViewData["hash"] = sb.ToString().ToLower();
+                    ViewData["hash"] = sb.ToString().ToLower();// hashes employees email to creata gravatar link in view
 
                     return View(db.Employees.ToList().Find(e => e.EmployeeID == empID));
                 }
@@ -729,7 +757,7 @@ namespace EPI_use_Tech_Assessment.Controllers
                     var sb = new StringBuilder();
                     foreach (var t in hashBytes) sb.Append(t.ToString("X2"));
 
-                    ViewData["hash"] = sb.ToString().ToLower();
+                    ViewData["hash"] = sb.ToString().ToLower();// hashes employees email to create gravatar link in the view. 
 
                     return View(db.Employees.ToList().Find(e => e.EmployeeID == empID));
                 }
@@ -817,12 +845,44 @@ namespace EPI_use_Tech_Assessment.Controllers
                     if (firstName == "" || lastName == "" || dob == "" || email == "" || empNum == null || salary == null || pos == "" || rlm == "")
                     {
                         ViewData["err"] = "Please complete all the required fields";
-                        return View();
+                        ViewData["id"] = id;
+                        List<SelectListItem> selListEmployees = new List<SelectListItem>();
+                        SelectListItem noManager = new SelectListItem();
+                        noManager.Value = "0";
+                        noManager.Text = "No Manager";
+                        selListEmployees.Add(noManager);
+
+                        foreach (var emp in db.Employees.ToList())
+                        {
+                            SelectListItem temp = new SelectListItem();
+                            temp.Value = "" + emp.EmployeeID;
+                            temp.Text = emp.FName + " " + emp.LName;
+                            selListEmployees.Add(temp);
+                        }// populating select list 
+                        ViewBag.data = selListEmployees;
+
+                        return View(db.Employees.ToList().Find(e => e.EmployeeID == empID));
                     }// if all fields are empty
                     if (email.Contains("@") == false)
                     {
                         ViewData["err"] = "Please enter a valid email address.";
-                        return View();
+                        ViewData["id"] = id;
+                        List<SelectListItem> selListEmployees = new List<SelectListItem>();
+                        SelectListItem noManager = new SelectListItem();
+                        noManager.Value = "0";
+                        noManager.Text = "No Manager";
+                        selListEmployees.Add(noManager);
+
+                        foreach (var emp in db.Employees.ToList())
+                        {
+                            SelectListItem temp = new SelectListItem();
+                            temp.Value = "" + emp.EmployeeID;
+                            temp.Text = emp.FName + " " + emp.LName;
+                            selListEmployees.Add(temp);
+                        }// populating select list 
+                        ViewBag.data = selListEmployees;
+
+                        return View(db.Employees.ToList().Find(e => e.EmployeeID == empID));
                     }// validated email
                     else
                     {

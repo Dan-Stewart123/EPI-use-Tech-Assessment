@@ -10,25 +10,26 @@
 
 @using (Html.BeginForm("loginPage", "Employees", FormMethod.Post))
 {
-    <label>@Html.Label("Email address:")</label>
+    <label class="col-md-3">@Html.Label("Email address:")</label>
     @Html.TextBox("email")
     <br />
     <br />
-    <label>@Html.Label("Password:")</label>
+    <label class="col-md-3">@Html.Label("Password:")</label>
     <input type="password" id="password" name="password">
-    <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("forgotPassword", "Employees")'">
+    <button type="button" class="btn btn-danger" style="height:30px" onclick="location.href='@Url.Action("forgotPassword", "Employees")'">
         Forgot Password
     </button>
     <br />
     <br />
-    <input type="submit" class="btn btn-primary" , value="Login" />
+    <input type="submit" style="display:-webkit-box; margin-left:auto; margin-right:auto;" class="btn btn-primary" , value="Login" />
     <br />
     <br />
-    <p>Don't have an account, create one by clicking the button bellow</p>
-    <br />
-    <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("createAccount", "Employees")'">
-        Create Account
-    </button>
+    <div style="display:-webkit-box; margin-left:auto; margin-right:auto;">
+        <p>Don't have an account, create one by clicking here: &nbsp; </p>
+        <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("createAccount", "Employees")'">
+            Create Account
+        </button>
+    </div>
 }
 
 

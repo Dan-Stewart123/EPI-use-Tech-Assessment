@@ -27,16 +27,14 @@
     </select>
     <br />
     <br />
-    <label class="col-md-3">@Html.Label("Search:")</label>
+    <label class="col-md-8">@Html.Label("Search:")</label>
     <input class="col-md-3" type="text" id="search" name="search">
-    <br />
-    <br />
-    <input type="submit" class="btn btn-primary" , value="Confirm" id="submitButton" />
     <br />
     <br />
     <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("homePage", "Employees", new { id = Model.EmployeeID})'">
         Cancel
     </button>
+    <input type="submit" class="btn btn-primary" , value="Confirm" id="submitButton" />
 }
 <br />
 <h3>Employees:</h3>

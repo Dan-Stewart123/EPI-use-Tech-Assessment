@@ -6,11 +6,10 @@
 
 <h2>Home Page</h2>
 <br />
+<img src="https://www.gravatar.com/avatar/@hash" style="float:right;" />
 <p>Welcome to the EPI-use employee manager, @Model.FName @Model.LName.</p>
 <br />
-<img src="https://www.gravatar.com/avatar/@hash" style="place-content:end"/>
 <br />
-<p>Double click on an employee to see those that report to that employee.</p>
 <div class="col-md-4">
     <br />
     <br />
@@ -34,11 +33,14 @@
     </button>
 
 </div>
-<div class="col-md-8" id="jstree">
-    <ul>
-        <li>Employees:</li>
-        <li>Reporting employees:</li>
-    </ul>
+<div class="col-md-8">
+    <p>Double click on an employee to see those that report to that employee.</p>
+    <div id="jstree">
+        <ul>
+            <li>Employees:</li>
+            <li>Reporting employees:</li>
+        </ul>
+    </div>
 </div>
 <br />
 <br />
