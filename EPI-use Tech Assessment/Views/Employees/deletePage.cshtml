@@ -1,11 +1,21 @@
 ﻿@model EPI_use_Tech_Assessment.Models.Employee
 @{
     ViewBag.Title = "deletePage";
+    var hash = ViewData["hash"];
 }
 
 <h2>Delete Account</h2>
 <p>Are you sure you wish to delete your account</p>
 <dl class="dl-horizontal">
+
+    <dt class="col-md-4">
+        @Html.Label("Profile Image:")
+    </dt>
+
+    <dd>
+        <img src="https://www.gravatar.com/avatar/@hash" style="place-content:end" />
+    </dd>
+
     <dt class="col-md-4">
         @Html.Label("First Name:")
     </dt>

@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using EPI_use_Tech_Assessment.Models;
 using jsTree3.Models;
 using System.Text.Json;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace EPI_use_Tech_Assessment.Controllers
 {
@@ -214,6 +216,18 @@ namespace EPI_use_Tech_Assessment.Controllers
 
                     ViewBag.json = JsonSerializer.Serialize(empList);
 
+                    MD5 md5 = MD5.Create();
+
+                    byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(loggedEmployee.email);
+                    byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                    var sb = new StringBuilder();
+                    foreach (var t in hashBytes) sb.Append(t.ToString("X2"));
+
+                    var temp2 = sb.ToString().ToLower();
+
+                    ViewData["hash"] = sb.ToString().ToLower();
+
                     SetPageCacheNoStore();
                     return View(loggedEmployee);
                 }
@@ -236,6 +250,16 @@ namespace EPI_use_Tech_Assessment.Controllers
             {
                 if (Request.Cookies["AuthID"].Value == Session["AuthID"].ToString())
                 {
+                    MD5 md5 = MD5.Create();
+
+                    byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(db.Employees.ToList().Find(e => e.EmployeeID == id).email);
+                    byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                    var sb = new StringBuilder();
+                    foreach (var t in hashBytes) sb.Append(t.ToString("X2"));
+
+                    ViewData["hash"] = sb.ToString().ToLower();
+
                     return View(db.Employees.ToList().Find(e => e.EmployeeID == id));
                 }
                 else
@@ -655,6 +679,17 @@ namespace EPI_use_Tech_Assessment.Controllers
                     {
                         ViewData["manager"] = "None";
                     }// if the employee does not have a manager
+
+                    MD5 md5 = MD5.Create();
+
+                    byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(db.Employees.ToList().Find(e => e.EmployeeID == empID).email);
+                    byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                    var sb = new StringBuilder();
+                    foreach (var t in hashBytes) sb.Append(t.ToString("X2"));
+
+                    ViewData["hash"] = sb.ToString().ToLower();
+
                     return View(db.Employees.ToList().Find(e => e.EmployeeID == empID));
                 }
                 else
@@ -685,6 +720,17 @@ namespace EPI_use_Tech_Assessment.Controllers
                     {
                         ViewData["manager"] = "None";
                     }// if the employee does not have a manager
+
+                    MD5 md5 = MD5.Create();
+
+                    byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(db.Employees.ToList().Find(e => e.EmployeeID == empID).email);
+                    byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                    var sb = new StringBuilder();
+                    foreach (var t in hashBytes) sb.Append(t.ToString("X2"));
+
+                    ViewData["hash"] = sb.ToString().ToLower();
+
                     return View(db.Employees.ToList().Find(e => e.EmployeeID == empID));
                 }
                 else

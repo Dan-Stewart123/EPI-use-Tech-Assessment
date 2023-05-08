@@ -3,11 +3,20 @@
     ViewBag.Title = "viewEmployeePage";
     var id = ViewData["id"];
     var manager = ViewData["manager"];
+    var hash = ViewData["hash"];
 }
 
 <h2>Employee Information.</h2>
 
 <dl class="dl-horizontal">
+
+    <dt class="col-md-4">
+        @Html.Label("Profile Image:")
+    </dt>
+
+    <dd>
+        <img src="https://www.gravatar.com/avatar/@hash" style="place-content:end" />
+    </dd>
 
     <dt class="col-md-4">
         @Html.Label("First Name:")
