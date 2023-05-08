@@ -161,6 +161,16 @@ namespace EPI_use_Tech_Assessment.Controllers
                 newEmp.Manager = rlm;
                 newEmp.email = email;
 
+                MD5 md5 = MD5.Create();
+
+                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(email);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                var sb = new StringBuilder();
+                foreach (var t in hashBytes) sb.Append(t.ToString("X2"));
+
+                newEmp.emailHash = sb.ToString().ToLower();
+
                 db.Employees.Add(newEmp);
                 db.SaveChanges();
 
@@ -216,18 +226,6 @@ namespace EPI_use_Tech_Assessment.Controllers
 
                     ViewBag.json = JsonSerializer.Serialize(empList);
 
-                    MD5 md5 = MD5.Create();
-
-                    byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(loggedEmployee.email);
-                    byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-                    var sb = new StringBuilder();
-                    foreach (var t in hashBytes) sb.Append(t.ToString("X2"));
-
-                    var temp2 = sb.ToString().ToLower();
-
-                    ViewData["hash"] = sb.ToString().ToLower();// hashes employees email to create gravatar link in view
-
                     SetPageCacheNoStore();
                     return View(loggedEmployee);
                 }
@@ -250,15 +248,6 @@ namespace EPI_use_Tech_Assessment.Controllers
             {
                 if (Request.Cookies["AuthID"].Value == Session["AuthID"].ToString())
                 {
-                    MD5 md5 = MD5.Create();
-
-                    byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(db.Employees.ToList().Find(e => e.EmployeeID == id).email);
-                    byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-                    var sb = new StringBuilder();
-                    foreach (var t in hashBytes) sb.Append(t.ToString("X2"));
-
-                    ViewData["hash"] = sb.ToString().ToLower();
 
                     return View(db.Employees.ToList().Find(e => e.EmployeeID == id));
                 }
@@ -387,6 +376,25 @@ namespace EPI_use_Tech_Assessment.Controllers
                         ViewData["err"] = "Please enter a valid email address.";
                         return View(db.Employees.ToList().Find(e => e.EmployeeID == id));
                     }// validated email
+                    if(id == Convert.ToInt32(rlm))
+                    {
+                        List<SelectListItem> selListEmployees = new List<SelectListItem>();
+                        SelectListItem noManager = new SelectListItem();
+                        noManager.Value = "0";
+                        noManager.Text = "No Manager";
+                        selListEmployees.Add(noManager);
+
+                        foreach (var emp in db.Employees.ToList())
+                        {
+                            SelectListItem temp = new SelectListItem();
+                            temp.Value = "" + emp.EmployeeID;
+                            temp.Text = emp.FName + " " + emp.LName;
+                            selListEmployees.Add(temp);
+                        }// populating select list 
+                        ViewBag.data = selListEmployees;
+                        ViewData["err"] = "You cannot be your own manager.";
+                        return View(db.Employees.ToList().Find(e => e.EmployeeID == id));
+                    }// if employee enters self for manager
                     else
                     {
                         Employee oldEmp = db.Employees.ToList().Find(e => e.EmployeeID == id);
@@ -399,6 +407,16 @@ namespace EPI_use_Tech_Assessment.Controllers
                         newEmp.Salary = Convert.ToInt32(salary);
                         newEmp.Position = pos;
                         newEmp.Manager = Convert.ToInt32(rlm);
+
+                        MD5 md5 = MD5.Create();
+
+                        byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(email);
+                        byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                        var sb = new StringBuilder();
+                        foreach (var t in hashBytes) sb.Append(t.ToString("X2"));
+
+                        newEmp.emailHash = sb.ToString().ToLower();
 
                         db.Entry(newEmp).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
@@ -708,15 +726,6 @@ namespace EPI_use_Tech_Assessment.Controllers
                         ViewData["manager"] = "None";
                     }// if the employee does not have a manager
 
-                    MD5 md5 = MD5.Create();
-
-                    byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(db.Employees.ToList().Find(e => e.EmployeeID == empID).email);
-                    byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-                    var sb = new StringBuilder();
-                    foreach (var t in hashBytes) sb.Append(t.ToString("X2"));
-
-                    ViewData["hash"] = sb.ToString().ToLower();// hashes employees email to creata gravatar link in view
 
                     return View(db.Employees.ToList().Find(e => e.EmployeeID == empID));
                 }
@@ -730,6 +739,38 @@ namespace EPI_use_Tech_Assessment.Controllers
                 return RedirectToAction("loginPage");
             }
         }// view employee page
+
+        public ActionResult viewEmployeeSortPage(int? id, int? empID)
+        {
+            try
+            {
+                if (Request.Cookies["AuthID"].Value == Session["AuthID"].ToString())
+                {
+                    ViewData["id"] = id;
+                    Employee temp = db.Employees.ToList().Find(e => e.EmployeeID == empID);
+                    Employee temp2 = db.Employees.ToList().Find(e => e.EmployeeID == temp.Manager);
+                    if (temp2 != null)
+                    {
+                        ViewData["manager"] = temp2.FName + " " + temp2.LName;
+                    }// if employee has a manager
+                    else
+                    {
+                        ViewData["manager"] = "None";
+                    }// if the employee does not have a manager
+
+
+                    return View(db.Employees.ToList().Find(e => e.EmployeeID == empID));
+                }
+                else
+                {
+                    return RedirectToAction("loginPage");
+                }
+            }
+            catch
+            {
+                return RedirectToAction("loginPage");
+            }
+        }// view employee sort page
 
         public ActionResult deleteOtherEmployee(int? id, int? empID)
         {
@@ -748,16 +789,6 @@ namespace EPI_use_Tech_Assessment.Controllers
                     {
                         ViewData["manager"] = "None";
                     }// if the employee does not have a manager
-
-                    MD5 md5 = MD5.Create();
-
-                    byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(db.Employees.ToList().Find(e => e.EmployeeID == empID).email);
-                    byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-                    var sb = new StringBuilder();
-                    foreach (var t in hashBytes) sb.Append(t.ToString("X2"));
-
-                    ViewData["hash"] = sb.ToString().ToLower();// hashes employees email to create gravatar link in the view. 
 
                     return View(db.Employees.ToList().Find(e => e.EmployeeID == empID));
                 }
@@ -884,6 +915,27 @@ namespace EPI_use_Tech_Assessment.Controllers
 
                         return View(db.Employees.ToList().Find(e => e.EmployeeID == empID));
                     }// validated email
+                    if(empID == Convert.ToInt32(rlm))
+                    {
+                        ViewData["err"] = "Employee cannot be their own manager.";
+                        ViewData["id"] = id;
+                        List<SelectListItem> selListEmployees = new List<SelectListItem>();
+                        SelectListItem noManager = new SelectListItem();
+                        noManager.Value = "0";
+                        noManager.Text = "No Manager";
+                        selListEmployees.Add(noManager);
+
+                        foreach (var emp in db.Employees.ToList())
+                        {
+                            SelectListItem temp = new SelectListItem();
+                            temp.Value = "" + emp.EmployeeID;
+                            temp.Text = emp.FName + " " + emp.LName;
+                            selListEmployees.Add(temp);
+                        }// populating select list 
+                        ViewBag.data = selListEmployees;
+
+                        return View(db.Employees.ToList().Find(e => e.EmployeeID == empID));
+                    }// employee manager check
                     else
                     {
                         Employee oldEmp = db.Employees.ToList().Find(e => e.EmployeeID == empID);
@@ -896,6 +948,16 @@ namespace EPI_use_Tech_Assessment.Controllers
                         newEmp.Salary = Convert.ToInt32(salary);
                         newEmp.Position = pos;
                         newEmp.Manager = Convert.ToInt32(rlm);
+
+                        MD5 md5 = MD5.Create();
+
+                        byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(email);
+                        byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                        var sb = new StringBuilder();
+                        foreach (var t in hashBytes) sb.Append(t.ToString("X2"));
+
+                        newEmp.emailHash = sb.ToString().ToLower();
 
                         db.Entry(newEmp).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();

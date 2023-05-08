@@ -1,6 +1,6 @@
 ﻿@model EPI_use_Tech_Assessment.Models.Employee
 @{
-    ViewBag.Title = "viewEmployeePage";
+    ViewBag.Title = "viewEmployeeSortPage";
     var id = ViewData["id"];
     var manager = ViewData["manager"];
 }
@@ -84,6 +84,6 @@
 </dl>
 <br />
 <br />
-<button type="button" class="btn btn-default" onclick="location.href='@Url.Action("searchEmployees", "Employees", new { id = id})'">
+<button type="button" class="btn btn-default" onclick="location.href='@Url.Action("sortEmployees", "Employees", new { id = id})'">
     Back
 </button>

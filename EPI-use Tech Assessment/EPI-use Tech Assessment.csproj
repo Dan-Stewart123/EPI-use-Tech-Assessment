@@ -272,6 +272,7 @@
     <Content Include="Views\Employees\viewEmployeePage.cshtml" />
     <Content Include="Views\Employees\deleteOtherEmployee.cshtml" />
     <Content Include="Views\Employees\updateOtherEmployee.cshtml" />
+    <Content Include="Views\Employees\viewEmployeeSortPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

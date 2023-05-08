@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="EmployeeDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="EmployeeDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Employees">
           <Key>
             <PropertyRef Name="EmployeeID" />
@@ -18,6 +18,7 @@
           <Property Name="Position" Type="varchar" MaxLength="50" />
           <Property Name="Manager" Type="int" />
           <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="emailHash" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Passwords">
           <Key>
@@ -47,11 +48,18 @@
             <End Role="Passwords" EntitySet="Passwords" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EmployeeDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="EmployeeDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Employees" EntityType="EmployeeDBModel.Employee" />
+          <EntitySet Name="Passwords" EntityType="EmployeeDBModel.Password" />
+          <AssociationSet Name="FK_Passwords_Employees" Association="EmployeeDBModel.FK_Passwords_Employees">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Password" EntitySet="Passwords" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="EmployeeID" />
@@ -65,7 +73,8 @@
           <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Manager" Type="Int32" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Passwords" Relationship="Self.FK_Passwords_Employees" FromRole="Employees" ToRole="Passwords" />
+          <Property Name="emailHash" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Passwords" Relationship="EmployeeDBModel.FK_Passwords_Employees" FromRole="Employee" ToRole="Password" />
         </EntityType>
         <EntityType Name="Password">
           <Key>
@@ -74,28 +83,20 @@
           <Property Name="PasswordID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EmployeeID" Type="Int32" Nullable="false" />
           <Property Name="EncryptedPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_Passwords_Employees" FromRole="Passwords" ToRole="Employees" />
+          <NavigationProperty Name="Employee" Relationship="EmployeeDBModel.FK_Passwords_Employees" FromRole="Password" ToRole="Employee" />
         </EntityType>
         <Association Name="FK_Passwords_Employees">
-          <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
-          <End Role="Passwords" Type="Self.Password" Multiplicity="*" />
+          <End Type="EmployeeDBModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="EmployeeDBModel.Password" Role="Password" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employees">
+            <Principal Role="Employee">
               <PropertyRef Name="EmployeeID" />
             </Principal>
-            <Dependent Role="Passwords">
+            <Dependent Role="Password">
               <PropertyRef Name="EmployeeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="EmployeeDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Employees" EntityType="Self.Employee" />
-          <EntitySet Name="Passwords" EntityType="Self.Password" />
-          <AssociationSet Name="FK_Passwords_Employees" Association="Self.FK_Passwords_Employees">
-            <End Role="Employees" EntitySet="Employees" />
-            <End Role="Passwords" EntitySet="Passwords" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -105,24 +106,25 @@
           <EntitySetMapping Name="Employees">
             <EntityTypeMapping TypeName="EmployeeDBModel.Employee">
               <MappingFragment StoreEntitySet="Employees">
-                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
-                <ScalarProperty Name="FName" ColumnName="FName" />
-                <ScalarProperty Name="LName" ColumnName="LName" />
-                <ScalarProperty Name="DOB" ColumnName="DOB" />
-                <ScalarProperty Name="EmpNumber" ColumnName="EmpNumber" />
-                <ScalarProperty Name="Salary" ColumnName="Salary" />
-                <ScalarProperty Name="Position" ColumnName="Position" />
-                <ScalarProperty Name="Manager" ColumnName="Manager" />
+                <ScalarProperty Name="emailHash" ColumnName="emailHash" />
                 <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="Manager" ColumnName="Manager" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="EmpNumber" ColumnName="EmpNumber" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="LName" ColumnName="LName" />
+                <ScalarProperty Name="FName" ColumnName="FName" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Passwords">
             <EntityTypeMapping TypeName="EmployeeDBModel.Password">
               <MappingFragment StoreEntitySet="Passwords">
-                <ScalarProperty Name="PasswordID" ColumnName="PasswordID" />
-                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
                 <ScalarProperty Name="EncryptedPassword" ColumnName="EncryptedPassword" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="PasswordID" ColumnName="PasswordID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

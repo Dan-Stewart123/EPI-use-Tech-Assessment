@@ -34,11 +34,13 @@
 <br />
 <table>
     <tr>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Profile Image</td>
         <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Name</td>
         <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Surname</td>
         <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Date of Birth</td>
         <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Email address</td>
         <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Position</td>
+        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 8px; "></td>
     </tr>
 
     @{
@@ -49,11 +51,19 @@
                 foreach (var item in ViewData["employees"] as List<EPI_use_Tech_Assessment.Models.Employee>)
                 {
                     <tr>
+                        <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px;">
+                            <img src="https://www.gravatar.com/avatar/@item.emailHash" style="place-content:end" />
+                        </td>
                         <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px;">@item.FName</td>
                         <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px; ">@item.LName</td>
                         <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px; ">@item.DOB</td>
                         <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px; ">@item.email</td>
                         <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 15px; ">@item.Position</td>
+                        <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 8px; ">
+                            <button type="button" class="btn btn-primary" style="width:250px; align-self:end" onclick="location.href='@Url.Action("viewEmployeeSortPage", "Employees", new { id = Model.EmployeeID, empID = item.EmployeeID })'">
+                                View Employee information
+                            </button>
+                        </td>
                     </tr>
 
                 }

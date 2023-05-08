@@ -29,6 +29,7 @@ namespace EPI_use_Tech_Assessment.Models
         public string Position { get; set; }
         public Nullable<int> Manager { get; set; }
         public string email { get; set; }
+        public string emailHash { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Password> Passwords { get; set; }

@@ -5,9 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="f165b69c764d4c24871c96fed0a22d50" Name="Diagram1">
-        <EntityTypeShape EntityType="EmployeeDBModel.Employee" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="EmployeeDBModel.Password" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
-        <AssociationConnector Association="EmployeeDBModel.FK_Passwords_Employees" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="EmployeeDBModel.Employee" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="EmployeeDBModel.Password" Width="1.5" PointX="3" PointY="1.625" />
+        <AssociationConnector Association="EmployeeDBModel.FK_Passwords_Employees" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
