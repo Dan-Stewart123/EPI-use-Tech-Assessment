@@ -49,7 +49,6 @@
         <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 15px; ">Position</td>
         <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 8px; "></td>
         <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 8px; "></td>
-        <td style="font-family: Verdana; font-size: 14px; font-weight: bold; text-align: center; padding: 8px; "></td>
     </tr>
 
     @{
@@ -79,8 +78,7 @@
                                 <button type="button" class="btn btn-warning" style="width:250px; align-self:end" onclick="location.href='@Url.Action("updateOtherEmployee", "Employees", new { id = Model.EmployeeID, empID = item.EmployeeID })'">
                                     Update employee
                                 </button>
-                            </td>
-                            <td style="font-family: Verdana; font-size: 12px; text-align: center; padding: 8px; ">
+                                <br />
                                 <button type="button" class="btn btn-danger" style="width:250px; align-self:end" onclick="location.href='@Url.Action("deleteOtherEmployee", "Employees", new { id = Model.EmployeeID, empID = item.EmployeeID })'">
                                     Delete employee
                                 </button>

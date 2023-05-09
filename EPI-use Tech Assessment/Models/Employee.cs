@@ -23,7 +23,7 @@ namespace EPI_use_Tech_Assessment.Models
         public int EmployeeID { get; set; }
         public string FName { get; set; }
         public string LName { get; set; }
-        public Nullable<System.DateTime> DOB { get; set; }
+        public string DOB { get; set; }
         public Nullable<int> EmpNumber { get; set; }
         public Nullable<decimal> Salary { get; set; }
         public string Position { get; set; }

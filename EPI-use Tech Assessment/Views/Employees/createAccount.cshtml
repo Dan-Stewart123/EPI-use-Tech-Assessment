@@ -28,7 +28,7 @@
     <br />
     <br />
     <label class="col-md-3">@Html.Label("Employee Number:")</label>
-    <input class="col-md-3" type="number" id="empNum" name="empNum">
+    <input class="col-md-3" type="number" step=".01" id="empNum" name="empNum">
 
     <label class="col-md-3">@Html.Label("Salary (Monthly):")</label>
     <input class="col-md-3" type="number" id="salary" name="salary">
@@ -56,7 +56,7 @@
     <input class="col-md-3" type="password" id="confPass" name="confPass">
     <br />
     <br />
-    <span class="label label-warning" id="warningLabel" style="display:none;">Passwords do not match</span>
+    <p>Profile images are created using Gravatar. To display a profile image, create a Gravatar account using this email.</p>
     <br />
     <br />
     <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("loginPage", "Employees")'">

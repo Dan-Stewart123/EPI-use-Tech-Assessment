@@ -127,7 +127,7 @@ namespace EPI_use_Tech_Assessment.Controllers
         }// return create account screen
 
         [HttpPost]
-        public ActionResult createAccount(string firstName, string lastName, string dob, string email, int? empNum, int? salary, string pos, int? rlm, string password, string confPass)
+        public ActionResult createAccount(string firstName, string lastName, string dob, string email, int? empNum, double? salary, string pos, int? rlm, string password, string confPass)
         {
             if (firstName == "" || lastName == "" || dob == "" || email == "" || empNum == null || salary == null || pos == "" || rlm == null || password == "" || confPass == "")
             {
@@ -154,9 +154,9 @@ namespace EPI_use_Tech_Assessment.Controllers
                 Employee newEmp = new Employee();
                 newEmp.FName = firstName;
                 newEmp.LName = lastName;
-                newEmp.DOB = Convert.ToDateTime(dob);
+                newEmp.DOB = Convert.ToDateTime(dob).ToShortDateString();
                 newEmp.EmpNumber = empNum;
-                newEmp.Salary = salary;
+                newEmp.Salary = Convert.ToDecimal(salary);
                 newEmp.Position = pos;
                 newEmp.Manager = rlm;
                 newEmp.email = email;
@@ -274,6 +274,30 @@ namespace EPI_use_Tech_Assessment.Controllers
                     Employee delEmployee = db.Employees.ToList().Find(e => e.EmployeeID == id);
                     Password delPass = db.Passwords.ToList().Find(p => p.EmployeeID == id);
 
+                    List<Employee> reportingEmp = db.Employees.ToList().FindAll(e => e.Manager == delEmployee.EmployeeID);
+                    if(reportingEmp != null)
+                    {
+                        if(delEmployee.Manager == 0)
+                        {
+                            foreach(var emp in reportingEmp)
+                            {
+                                emp.Manager = 0;
+                                db.Entry(emp).State = System.Data.Entity.EntityState.Modified;
+                                db.SaveChanges();
+                            }// for each
+                        }// if del employee has no manager
+
+                        if (delEmployee.Manager != 0)
+                        {
+                            foreach (var emp in reportingEmp)
+                            {
+                                emp.Manager = delEmployee.Manager;
+                                db.Entry(emp).State = System.Data.Entity.EntityState.Modified;
+                                db.SaveChanges();
+                            }// for each
+                        }// if del employee has no manager
+                    }// if del employee has employees reporting to them
+
                     db.Passwords.Remove(delPass);
                     db.SaveChanges();
 
@@ -331,7 +355,7 @@ namespace EPI_use_Tech_Assessment.Controllers
         }// update account get
 
         [HttpPost]
-        public ActionResult updateAccount(int? id, string firstName, string lastName, string dob, string email, int? empNum, int? salary, string pos, string rlm)
+        public ActionResult updateAccount(int? id, string firstName, string lastName, string dob, string email, int? empNum, double? salary, string pos, string rlm)
         {
 
             try
@@ -401,10 +425,10 @@ namespace EPI_use_Tech_Assessment.Controllers
                         Employee newEmp = oldEmp;
                         newEmp.FName = firstName;
                         newEmp.LName = lastName;
-                        newEmp.DOB = Convert.ToDateTime(dob);
+                        newEmp.DOB = Convert.ToDateTime(dob).ToShortDateString();
                         newEmp.email = email;
                         newEmp.EmpNumber = empNum;
-                        newEmp.Salary = Convert.ToInt32(salary);
+                        newEmp.Salary = Convert.ToDecimal(salary);
                         newEmp.Position = pos;
                         newEmp.Manager = Convert.ToInt32(rlm);
 
@@ -669,7 +693,7 @@ namespace EPI_use_Tech_Assessment.Controllers
                     }// surname
                     if (sort == "3")
                     {
-                        sortedList = db.Employees.ToList().FindAll(e => e.DOB == Convert.ToDateTime(search));
+                        sortedList = db.Employees.ToList().FindAll(e => e.DOB == search);
                     }// dob
                     if (sort == "4")
                     {
@@ -812,6 +836,30 @@ namespace EPI_use_Tech_Assessment.Controllers
                     Employee delEmployee = db.Employees.ToList().Find(e => e.EmployeeID == delID);
                     Password delPass = db.Passwords.ToList().Find(p => p.EmployeeID == delID);
 
+                    List<Employee> reportingEmp = db.Employees.ToList().FindAll(e => e.Manager == delEmployee.EmployeeID);
+                    if (reportingEmp != null)
+                    {
+                        if (delEmployee.Manager == 0)
+                        {
+                            foreach (var emp in reportingEmp)
+                            {
+                                emp.Manager = 0;
+                                db.Entry(emp).State = System.Data.Entity.EntityState.Modified;
+                                db.SaveChanges();
+                            }// for each
+                        }// if del employee has no manager
+
+                        if (delEmployee.Manager != 0)
+                        {
+                            foreach (var emp in reportingEmp)
+                            {
+                                emp.Manager = delEmployee.Manager;
+                                db.Entry(emp).State = System.Data.Entity.EntityState.Modified;
+                                db.SaveChanges();
+                            }// for each
+                        }// if del employee has no manager
+                    }// if del employee has employees reporting to them
+
                     db.Passwords.Remove(delPass);
                     db.SaveChanges();
 
@@ -867,7 +915,7 @@ namespace EPI_use_Tech_Assessment.Controllers
         }// update reporting employee get
 
         [HttpPost]
-        public ActionResult updateOtherEmployee(int? id, int? empID, string firstName, string lastName, string dob, string email, int? empNum, int? salary, string pos, string rlm)
+        public ActionResult updateOtherEmployee(int? id, int? empID, string firstName, string lastName, string dob, string email, int? empNum, double? salary, string pos, string rlm)
         {
             try
             {
@@ -942,10 +990,10 @@ namespace EPI_use_Tech_Assessment.Controllers
                         Employee newEmp = oldEmp;
                         newEmp.FName = firstName;
                         newEmp.LName = lastName;
-                        newEmp.DOB = Convert.ToDateTime(dob);
+                        newEmp.DOB = Convert.ToDateTime(dob).ToShortDateString();
                         newEmp.email = email;
                         newEmp.EmpNumber = empNum;
-                        newEmp.Salary = Convert.ToInt32(salary);
+                        newEmp.Salary = Convert.ToDecimal(salary);
                         newEmp.Position = pos;
                         newEmp.Manager = Convert.ToInt32(rlm);
 
