@@ -488,7 +488,7 @@ namespace EPI_use_Tech_Assessment.Controllers
                 {
                     if (oldPass == "" || newPass == "" || confPass == "")
                     {
-                        ViewData["err"] = "Please complete all the required fields";
+                        ViewData["err"] = "Please complete all the required fields.";
                         return View(db.Employees.ToList().Find(e => e.EmployeeID == id));
                     }// if fields are empty
                     if (newPass != confPass)
@@ -518,8 +518,8 @@ namespace EPI_use_Tech_Assessment.Controllers
                         }// if passwords match
                         else
                         {
-                            string temp = "Old password is incorrect.";
-                            return RedirectToAction("changePassword", new { id = id, err = temp });
+                            ViewData["err"] = "Old password is incorrect.";
+                            return View(db.Employees.ToList().Find(e => e.EmployeeID == id));
                         }// if passwords dont match
                     }// else statement
                 }
