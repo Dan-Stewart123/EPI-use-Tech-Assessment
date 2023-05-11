@@ -519,7 +519,7 @@ namespace EPI_use_Tech_Assessment.Controllers
                         else
                         {
                             string temp = "Old password is incorrect.";
-                            return RedirectToAction("resetPassword", new { id = id, err = temp });
+                            return RedirectToAction("changePassword", new { id = id, err = temp });
                         }// if passwords dont match
                     }// else statement
                 }
